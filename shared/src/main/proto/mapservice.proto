@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "at.tugraz.oop2";
+option java_outer_classname = "HelloWorldProto";
+
+package osm_backend;
+
+// Grpc automatically adds "Grpc" to end of service name
+// TODO Need to see implementation of PNG render function and to decide, where to implement it
+service Geography {
+  rpc TestReqCl (EmptyValue) returns (TestRes) {}; // Test responce. Need to be deleted in production
+
+  rpc GetAmenityById(ReqById) returns (AmenityByID) {};
+  rpc GetRoadById(ReqById) returns (RoadByID) {};
+  rpc GetAmenities(ReqAmenityMany) returns (Amenities) {};
+  rpc GetRoads(ReqRoadMany) returns (Roads) {};
+  rpc GetRouting(ReqRouting) returns (Routing) {};
+  rpc GetLanduse(Boxes) returns (Landuse) {};
+  rpc GetMapTile(ReqMapTile) returns (MapTile) {};
+}
+
+message EmptyValue {}
+
+// ------------------- Request bodies -------------------- //
+
+message ReqById {
+  int64 id = 1;
+}
+
+message Points {
+  double point_x = 1;
+  double point_y = 2;
+  double point_d = 3;
+}
+
+message Boxes {
+  double tl_x = 1;
+  double tl_y = 2;  
+  double br_x = 3;
+  double br_y = 4;
+}
+
+message ReqAmenityMany {
+  string amenity = 1;
+
+  oneof location {
+    Points points = 2;
+    Boxes boxes = 3;
+  } 
+
+  int32 take = 4;
+  int32 skip = 5;
+}
+
+message ReqRoadMany {
+  string road = 1;
+
+  Boxes boxes = 2;
+  
+  int32 take = 3;
+  int32 skip = 4;
+}
+
+message ReqRouting {
+  int32 from = 1;
+  int32 to = 2;
+  string weighting = 3; 
+}
+
+message ReqMapTile {
+  int32 x = 1;
+  int32 y = 2;
+  int32 z = 3;
+  string layers = 4;
+}
+
+
+
+
+
+// ---------------- Particles of responce ---------------- //
+
+//message Crs {
+//  string type = 1;
+//  map<string, string> properties = 2;
+//}
+//
+//message Coordinates {
+//  repeated double coordinates = 2;
+//}
+//
+//message AmenityGeom {
+//  string type = 1;
+//  Coordinates coordinates = 2;
+//  Crs crs = 3;
+//}
+//
+//message RoadGeom {
+//  string type = 1;
+//  repeated Coordinates coordinates = 2;
+//  Crs crs = 3;
+//}
+//
+//message Tags {
+//  map<string, string> tags = 1;
+//}
+//
+//message Paging {
+//  int32 skip = 1;
+//  int32 take = 2;
+//  int32 total = 3;
+//}
+//
+//message UsageObj {
+//  string type = 1;
+//  double share = 2;
+//  double area = 3;
+//}
+
+// ------------------- Responces by id ------------------- //
+
+message AmenityByID {
+//  string name = 1;
+//  int32 id = 2;
+//  AmenityGeom geom = 3;
+//  Tags tags = 4;
+//  string type = 5;
+  string response = 1;
+}
+
+message RoadByID { 
+//  string name = 1;
+//  int32 id = 2;
+//  RoadGeom geom = 3;
+//  Tags tags = 4;
+//  string type = 5;
+//  repeated int32 child_ids = 6;
+  string response = 1;
+} 
+
+// ------------------- Responces many  ------------------- //
+
+message Amenities {
+  string response = 1;
+}
+
+message Roads {
+  string response = 1;
+}
+
+message Routing {
+  string response = 1;
+}
+
+message Landuse {
+  string response = 1;
+}
+
+
+message MapTile {
+  bytes response = 1;
+}
+
+// Test responce. Need to be deleted in production
+message TestRes {
+  string message = 1;
+}
